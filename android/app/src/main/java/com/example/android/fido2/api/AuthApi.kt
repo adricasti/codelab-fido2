@@ -57,7 +57,7 @@ class AuthApi @Inject constructor(
     companion object {
         private const val BASE_URL = BuildConfig.API_BASE_URL
         private val JSON = "application/json".toMediaTypeOrNull()
-        private const val SessionIdKey = "connect.sid="
+        private const val SESSION_ID_KEY = "connect.sid="
         private const val TAG = "AuthApi"
     }
 
@@ -129,8 +129,8 @@ class AuthApi @Inject constructor(
                 .method("POST", jsonRequestBody {
                     name("attestation").value("none")
                     name("authenticatorSelection").objectValue {
-                        name("authenticatorAttachment").value("platform")
-                        name("userVerification").value("required")
+                        name("authenticatorAttachment").value("cross-platform")
+                        name("userVerification").value("discouraged")
                     }
                 })
                 .build()
@@ -525,22 +525,22 @@ class AuthApi @Inject constructor(
             // All other errors throw an exception.
             throwResponseError(this, errorMessage)
         }
-        val cookie = headers("set-cookie").find { it.startsWith(SessionIdKey) }
+        val cookie = headers("set-cookie").find { it.startsWith(SESSION_ID_KEY) }
         val sessionId = if (cookie != null) parseSessionId(cookie) else null
         return ApiResult.Success(sessionId, data())
     }
 
     private fun parseSessionId(cookie: String): String {
-        val start = cookie.indexOf(SessionIdKey)
+        val start = cookie.indexOf(SESSION_ID_KEY)
         if (start < 0) {
-            throw ApiException("Cannot find $SessionIdKey")
+            throw ApiException("Cannot find $SESSION_ID_KEY")
         }
-        val semicolon = cookie.indexOf(";", start + SessionIdKey.length)
+        val semicolon = cookie.indexOf(";", start + SESSION_ID_KEY.length)
         val end = if (semicolon < 0) cookie.length else semicolon
-        return cookie.substring(start + SessionIdKey.length, end)
+        return cookie.substring(start + SESSION_ID_KEY.length, end)
     }
 
     private fun formatCookie(sessionId: String): String {
-        return "$SessionIdKey$sessionId"
+        return "$SESSION_ID_KEY$sessionId"
     }
 }

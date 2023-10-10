@@ -91,9 +91,10 @@
             android:enabled="@{viewModel.nextEnabled}"
             android:onClick="@{() -> viewModel.sendUsername()}"
             android:text="@string/next"
+            app:backgroundTint="@color/accent"
             app:layout_constraintBottom_toTopOf="@id/explanation"
-            app:layout_constraintTop_toBottomOf="@id/container_username"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/container_username" />
 
         <androidx.core.widget.ContentLoadingProgressBar
             android:id="@+id/sending"

@@ -108,9 +108,10 @@
             android:enabled="@{viewModel.signInEnabled}"
             android:onClick="@{() -> viewModel.submitPassword()}"
             android:text="@string/sign_in"
+            app:backgroundTint="@color/accent"
             app:layout_constraintBottom_toTopOf="@id/explanation"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/container_password"/>
+            app:layout_constraintTop_toBottomOf="@id/container_password" />
 
         <androidx.core.widget.ContentLoadingProgressBar
             android:id="@+id/processing"
